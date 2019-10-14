@@ -1,0 +1,572 @@
+('Z:\\home\\flo\\delivery\\year_3\\IA\\build\\pbrain-pyrandom.exe\\PYZ-00.pyz',
+ [('pywintypes',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\site-packages\\win32\\lib\\pywintypes.py',
+   'PYMODULE'),
+  ('distutils.sysconfig',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\distutils\\sysconfig.py',
+   'PYMODULE'),
+  ('distutils',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\distutils\\__init__.py',
+   'PYMODULE'),
+  ('distutils.log',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\distutils\\log.py',
+   'PYMODULE'),
+  ('distutils.text_file',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\distutils\\text_file.py',
+   'PYMODULE'),
+  ('_osx_support',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\_osx_support.py',
+   'PYMODULE'),
+  ('distutils.errors',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\distutils\\errors.py',
+   'PYMODULE'),
+  ('imp',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\imp.py',
+   'PYMODULE'),
+  ('ntpath',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\ntpath.py',
+   'PYMODULE'),
+  ('_strptime',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\_strptime.py',
+   'PYMODULE'),
+  ('datetime',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\datetime.py',
+   'PYMODULE'),
+  ('_py_abc',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\_py_abc.py',
+   'PYMODULE'),
+  ('stringprep',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\stringprep.py',
+   'PYMODULE'),
+  ('typing',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\typing.py',
+   'PYMODULE'),
+  ('fnmatch',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\fnmatch.py',
+   'PYMODULE'),
+  ('struct',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\struct.py',
+   'PYMODULE'),
+  ('_compat_pickle',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\_compat_pickle.py',
+   'PYMODULE'),
+  ('__future__',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\__future__.py',
+   'PYMODULE'),
+  ('difflib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\difflib.py',
+   'PYMODULE'),
+  ('ast',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\ast.py',
+   'PYMODULE'),
+  ('inspect',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\inspect.py',
+   'PYMODULE'),
+  ('cmd',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\cmd.py',
+   'PYMODULE'),
+  ('bdb',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\bdb.py',
+   'PYMODULE'),
+  ('opcode',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\opcode.py',
+   'PYMODULE'),
+  ('dis',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\dis.py',
+   'PYMODULE'),
+  ('codeop',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\codeop.py',
+   'PYMODULE'),
+  ('code',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\code.py',
+   'PYMODULE'),
+  ('glob',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\glob.py',
+   'PYMODULE'),
+  ('shlex',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\shlex.py',
+   'PYMODULE'),
+  ('runpy',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\runpy.py',
+   'PYMODULE'),
+  ('importlib._bootstrap',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\importlib\\_bootstrap.py',
+   'PYMODULE'),
+  ('importlib._bootstrap_external',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\importlib\\_bootstrap_external.py',
+   'PYMODULE'),
+  ('importlib.machinery',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\importlib\\machinery.py',
+   'PYMODULE'),
+  ('importlib.util',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\importlib\\util.py',
+   'PYMODULE'),
+  ('importlib.abc',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\importlib\\abc.py',
+   'PYMODULE'),
+  ('importlib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\importlib\\__init__.py',
+   'PYMODULE'),
+  ('pkgutil',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pkgutil.py',
+   'PYMODULE'),
+  ('xml',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\__init__.py',
+   'PYMODULE'),
+  ('xml.sax.expatreader',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\sax\\expatreader.py',
+   'PYMODULE'),
+  ('xml.sax.saxutils',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\sax\\saxutils.py',
+   'PYMODULE'),
+  ('urllib.request',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\urllib\\request.py',
+   'PYMODULE'),
+  ('getpass',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\getpass.py',
+   'PYMODULE'),
+  ('nturl2path',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\nturl2path.py',
+   'PYMODULE'),
+  ('ftplib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\ftplib.py',
+   'PYMODULE'),
+  ('netrc',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\netrc.py',
+   'PYMODULE'),
+  ('http.cookiejar',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\http\\cookiejar.py',
+   'PYMODULE'),
+  ('urllib.response',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\urllib\\response.py',
+   'PYMODULE'),
+  ('urllib.error',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\urllib\\error.py',
+   'PYMODULE'),
+  ('xml.sax',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\sax\\__init__.py',
+   'PYMODULE'),
+  ('xml.sax.handler',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\sax\\handler.py',
+   'PYMODULE'),
+  ('xml.sax._exceptions',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\sax\\_exceptions.py',
+   'PYMODULE'),
+  ('xml.sax.xmlreader',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\sax\\xmlreader.py',
+   'PYMODULE'),
+  ('xml.parsers',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\parsers\\__init__.py',
+   'PYMODULE'),
+  ('xml.parsers.expat',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\xml\\parsers\\expat.py',
+   'PYMODULE'),
+  ('plistlib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\plistlib.py',
+   'PYMODULE'),
+  ('platform',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\platform.py',
+   'PYMODULE'),
+  ('token',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\token.py',
+   'PYMODULE'),
+  ('tokenize',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\tokenize.py',
+   'PYMODULE'),
+  ('urllib.parse',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\urllib\\parse.py',
+   'PYMODULE'),
+  ('tempfile',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\tempfile.py',
+   'PYMODULE'),
+  ('tty',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\tty.py',
+   'PYMODULE'),
+  ('pydoc_data',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pydoc_data\\__init__.py',
+   'PYMODULE'),
+  ('pydoc_data.topics',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pydoc_data\\topics.py',
+   'PYMODULE'),
+  ('html.entities',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\html\\entities.py',
+   'PYMODULE'),
+  ('html',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\html\\__init__.py',
+   'PYMODULE'),
+  ('ssl',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\ssl.py',
+   'PYMODULE'),
+  ('http.client',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\http\\client.py',
+   'PYMODULE'),
+  ('mimetypes',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\mimetypes.py',
+   'PYMODULE'),
+  ('socketserver',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\socketserver.py',
+   'PYMODULE'),
+  ('http',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\http\\__init__.py',
+   'PYMODULE'),
+  ('http.server',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\http\\server.py',
+   'PYMODULE'),
+  ('optparse',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\optparse.py',
+   'PYMODULE'),
+  ('uu',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\uu.py',
+   'PYMODULE'),
+  ('quopri',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\quopri.py',
+   'PYMODULE'),
+  ('email.feedparser',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\feedparser.py',
+   'PYMODULE'),
+  ('email.parser',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\parser.py',
+   'PYMODULE'),
+  ('email',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\__init__.py',
+   'PYMODULE'),
+  ('calendar',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\calendar.py',
+   'PYMODULE'),
+  ('email._parseaddr',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\_parseaddr.py',
+   'PYMODULE'),
+  ('email.utils',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\utils.py',
+   'PYMODULE'),
+  ('email.errors',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\errors.py',
+   'PYMODULE'),
+  ('email.header',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\header.py',
+   'PYMODULE'),
+  ('email._policybase',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\_policybase.py',
+   'PYMODULE'),
+  ('email.base64mime',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\base64mime.py',
+   'PYMODULE'),
+  ('email.encoders',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\encoders.py',
+   'PYMODULE'),
+  ('email.charset',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\charset.py',
+   'PYMODULE'),
+  ('base64',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\base64.py',
+   'PYMODULE'),
+  ('email._encoded_words',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\_encoded_words.py',
+   'PYMODULE'),
+  ('hashlib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\hashlib.py',
+   'PYMODULE'),
+  ('bisect',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\bisect.py',
+   'PYMODULE'),
+  ('email.generator',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\generator.py',
+   'PYMODULE'),
+  ('email.iterators',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\iterators.py',
+   'PYMODULE'),
+  ('urllib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\urllib\\__init__.py',
+   'PYMODULE'),
+  ('email._header_value_parser',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\_header_value_parser.py',
+   'PYMODULE'),
+  ('email.headerregistry',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\headerregistry.py',
+   'PYMODULE'),
+  ('email.quoprimime',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\quoprimime.py',
+   'PYMODULE'),
+  ('email.contentmanager',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\contentmanager.py',
+   'PYMODULE'),
+  ('email.policy',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\policy.py',
+   'PYMODULE'),
+  ('email.message',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\email\\message.py',
+   'PYMODULE'),
+  ('bz2',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\bz2.py',
+   'PYMODULE'),
+  ('lzma',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\lzma.py',
+   'PYMODULE'),
+  ('_compression',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\_compression.py',
+   'PYMODULE'),
+  ('gzip',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\gzip.py',
+   'PYMODULE'),
+  ('tarfile',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\tarfile.py',
+   'PYMODULE'),
+  ('py_compile',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\py_compile.py',
+   'PYMODULE'),
+  ('zipfile',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\zipfile.py',
+   'PYMODULE'),
+  ('shutil',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\shutil.py',
+   'PYMODULE'),
+  ('socket',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\socket.py',
+   'PYMODULE'),
+  ('webbrowser',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\webbrowser.py',
+   'PYMODULE'),
+  ('pydoc',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pydoc.py',
+   'PYMODULE'),
+  ('getopt',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\getopt.py',
+   'PYMODULE'),
+  ('pdb',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pdb.py',
+   'PYMODULE'),
+  ('unittest.util',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\util.py',
+   'PYMODULE'),
+  ('unittest.result',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\result.py',
+   'PYMODULE'),
+  ('string',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\string.py',
+   'PYMODULE'),
+  ('logging',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\logging\\__init__.py',
+   'PYMODULE'),
+  ('unittest.case',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\case.py',
+   'PYMODULE'),
+  ('unittest.suite',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\suite.py',
+   'PYMODULE'),
+  ('unittest.loader',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\loader.py',
+   'PYMODULE'),
+  ('unittest.runner',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\runner.py',
+   'PYMODULE'),
+  ('unittest.main',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\main.py',
+   'PYMODULE'),
+  ('unittest.signals',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\signals.py',
+   'PYMODULE'),
+  ('unittest',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\unittest\\__init__.py',
+   'PYMODULE'),
+  ('doctest',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\doctest.py',
+   'PYMODULE'),
+  ('stat',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\stat.py',
+   'PYMODULE'),
+  ('genericpath',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\genericpath.py',
+   'PYMODULE'),
+  ('posixpath',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\posixpath.py',
+   'PYMODULE'),
+  ('signal',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\signal.py',
+   'PYMODULE'),
+  ('contextlib',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\contextlib.py',
+   'PYMODULE'),
+  ('_threading_local',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\_threading_local.py',
+   'PYMODULE'),
+  ('threading',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\threading.py',
+   'PYMODULE'),
+  ('selectors',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\selectors.py',
+   'PYMODULE'),
+  ('subprocess',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\subprocess.py',
+   'PYMODULE'),
+  ('os',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\os.py',
+   'PYMODULE'),
+  ('gettext',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\gettext.py',
+   'PYMODULE'),
+  ('copy',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\copy.py',
+   'PYMODULE'),
+  ('textwrap',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\textwrap.py',
+   'PYMODULE'),
+  ('argparse',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\argparse.py',
+   'PYMODULE'),
+  ('pprint',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pprint.py',
+   'PYMODULE'),
+  ('pickle',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\pickle.py',
+   'PYMODULE'),
+  ('tracemalloc',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\tracemalloc.py',
+   'PYMODULE'),
+  ('pbraingomokuai',
+   'Z:\\home\\flo\\delivery\\year_3\\IA\\pbraingomokuai.py',
+   'PYMODULE'),
+  ('random',
+   'c:\\users\\flo\\local settings\\application '
+   'data\\Programs\\Python\\Python37\\lib\\random.py',
+   'PYMODULE')])
