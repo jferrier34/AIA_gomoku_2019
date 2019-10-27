@@ -3,12 +3,15 @@
 import sys
 import random
 
-infotext = "salut ca va"
-
+infotext = "IA by julien ferrier and florian lavabre"
 DEBUG      = False
 ABOUT_FUNC = True
 DEBUG_EVAL = True
 
+First_Turn = 0
+Best_Match = 0
+Best_X = 0
+Best_Y = 0
 width, height = 20, 20
 info_timeout_turn = 50000
 info_timeout_match = 1000000000
@@ -19,8 +22,6 @@ info_game_type = 1
 info_exact5 = 0
 info_renju = 0
 info_continuous = 1
-terminateAI = None
-start_time = None
 dataFolder = ""
 
 MAX_BOARD = 20
@@ -47,14 +48,14 @@ def isFree(x, y):
 	return x >= 0 and y >= 0 and x < width and y < height and board[x][y] == 0
 
 def brain_my(x, y):
-	if isFree(x,y):
+	if isFree(x, y):
 		board[x][y] = 1
 	else:
 		pipeOut("ERROR my move [{},{}]".format(x, y))
 	return
 
 def brain_opponents(x, y):
-	if isFree(x,y):
+	if isFree(x, y):
 		board[x][y] = 2
 	else:
 		pipeOut("ERROR opponents's move [{},{}]".format(x, y))
@@ -73,8 +74,76 @@ def brain_takeback(x, y):
 		return 0
 	return 2
 
+def Do_the_magic_right(y, x):
+	if board[x][y+1] == 2:
+		if board[x][y+1] == 2 and board[x][y+1] == 0:
+			return (y+1)
+		if board[x][y + 1] == 2 and board[x][y + 2] == 0:
+			return(y + 2)
+		if board[x][y + 2] == 2 and board[x][y + 3] == 0:
+			return(y + 3)
+	return (y+1)
+
+def Do_the_magic_up(y, x):
+	if (board[x - 1][y] == 2):
+		if (board[x-1][y] == 2 and board[x-2][y] == 0):
+			return (x-2)
+		if(board[x - 2][y] == 2 and board[x - 3][y] == 0):
+			return(x - 3)
+		if(board[x - 3][y] == 2 and board[x - 4][y] == 0):
+			return(x - 4)
+	return (x-1)
+
+def Do_the_magic_down(y, x):
+	if (board[x + 1][y] == 2):
+		if (board[x+1][y] == 2 and board[x+2] == 0):
+			return (x+2)
+		if(board[x + 2][y] == 2 and board[x + 3][y] == 0):
+			return(x + 3)
+		if(board[x + 3][y] == 2 and board[x + 4][y] == 0):
+			return(x + 4)
+	return (x+1)
+
+def Do_the_magic_left(y, x):
+	if (board[x][y - 1] == 2):
+		if (board[x][y-1] == 2 and board[x][y-2] == 0):
+			return (y - 2)
+		if(board[x][y - 2] == 2 and board[x][y - 3] == 0):
+			return(y - 3)
+		if(board[x][y - 3] == 2 and board[x][y - 4] == 0):
+			return(y - 4)
+	return (y-1)
+
 def brain_turn():
-	do_mymove(random.randint(0, width), random.randint(0, height))
+	recup_x = int(0)
+	recup_y= int(0)
+	for x in range(0, MAX_BOARD):
+		for y in range(0, MAX_BOARD):
+			if (board[x][y] == 2):
+				recup_x = Do_the_magic_right(y, x)
+				if (recup_x != x):
+					do_mymove(recup_x, y)
+					return
+			if (board[x][y] == 2):
+				recup_x = Do_the_magic_left(y, x)
+				if (recup_x != x):
+					do_mymove(recup_x, y)
+					return
+			if (board[x][y] == 2):
+				recup_y = Do_the_magic_up(y, x)
+				if (recup_y != y):
+					do_mymove(x, recup_y)
+					return
+			if (board[x][y] == 2):
+				recup_y = Do_the_magic_down(y, x)
+				if (recup_y != y):
+					do_mymove(x, recup_y)
+					return
+			recup_x = recup_x + 1
+		recup_y = recup_y + 1
+	xi = random.randint(0, width)
+	yi =  random.randint(0, height)
+	do_mymove(xi, yi)
 	return
 
 def brain_end():
@@ -92,6 +161,9 @@ def pipeOut(what):
 	sys.stdout.flush()
 
 def do_mymove(x, y):
+	while (isFree(x,y) != True):
+		x = random.randint(0, width)
+		y = random.randint(0, height)
 	brain_my(x, y)
 	pipeOut("{},{}".format(x,y))
 
@@ -110,8 +182,8 @@ def get_line():
 
 def parse_coord(param):
 	if param.count(",") != 1:
-		return None
-	x, comma, y = param.partition(',')
+		return None, None
+	x, y = param.split(",")
 	x, y = [safeInt(v) for v in (x, y)]
 	if any(v is None for v in (x,y)):
 		return None, None
@@ -139,19 +211,7 @@ def get_cmd_param(command, input):
 		return None
 	return input[n1:].lstrip()
 
-def turn():
-	"""start thinking"""
-	global terminateAI
-	terminateAI = 0
-
-def stop():
-	"""stop thinking"""
-	global terminateAI
-	terminateAI = 1
-
 def start():
-	global start_time
-	stop()
 	global width, height
 	if not width:
 		width = height = 20
@@ -253,7 +313,7 @@ def do_command(cmd):
 	param = get_cmd_param("begin", cmd)
 	if param is not None:
 		start()
-		turn()
+		brain_turn()
 		return
 	param = get_cmd_param("about", cmd)
 	if param is not None:
@@ -264,7 +324,6 @@ def do_command(cmd):
 		return
 	param = get_cmd_param("end", cmd)
 	if param is not None:
-		stop()
 		brain_end()
 		sys.exit(0)
 		return
@@ -284,7 +343,6 @@ def do_command(cmd):
 				if cmd.lower() != "done":
 					pipeOut("ERROR x,y,who or DONE expected after BOARD")
 				break
-		turn()
 		return
 	param = get_cmd_param("takeback", cmd)
 	if param is not None:
