@@ -1,368 +1,581 @@
 #!/usr/bin/python3
+from sys import stdout, exit
+from random import randint
 
-import sys
-import random
+class Protocol_funct:
 
-infotext = "IA by julien ferrier and florian lavabre"
-DEBUG      = False
-ABOUT_FUNC = True
-DEBUG_EVAL = True
+    timeout_turn = 0
+    timeout_match = 0
+    max_memory = 0
+    time_left = 0
+    game_type = 0
+    rule = 0
+    evaluate = 0
+    folder = 0
+    player = 0
 
-First_Turn = 0
-Best_Match = 0
-Best_X = 0
-Best_Y = 0
-width, height = 20, 20
-info_timeout_turn = 50000
-info_timeout_match = 1000000000
-info_time_left = 1000000000
-info_max_memory = 70000
-"""0: human opponent, 1: AI opponent, 2: tournament, 3: network tournament"""
-info_game_type = 1
-info_exact5 = 0
-info_renju = 0
-info_continuous = 1
-dataFolder = ""
+    dimension = 0
+    board = 0
 
-MAX_BOARD = 20
-board = [[0 for i in range(MAX_BOARD)] for j in range(MAX_BOARD)]
+    minEval = [0, 0, 100000000000]
+    maxEval = [0, 0, -100000000000]
 
-def brain_init():
-	if width < 5 or height < 5:
-		pipeOut("ERROR size of the board")
-		return
-	if width > MAX_BOARD or height > MAX_BOARD:
-		pipeOut("ERROR Maximal board size is {}".format(MAX_BOARD))
-		return
-	pipeOut("OK")
-	return
+    case = [0, 0, 0]
 
-def brain_restart():
-	for x in range(width):
-		for y in range(height):
-			board[x][y] = 0
-	pipeOut("OK")
-	return
+    AiFive =                9000000000000
+    OppFive =               900000000000
+    AiOppenedFour =         90000000000
+    OppOppenedFour =        9000000000
+    AiFourAndOppenedThree = 900000000
+    OppFourAndOppenedThree= 90000000
+    AiTwoOppenedThree =     9000000
+    OppTwoOppenedThree =    900000
+    AiWinningPattern =      500000
+    AiOppenedThree =        15000
+    OppOppenedThree =       5000
+    AiFour =                3000
+    OppFour =               2000
+    AiOppenedTwo =          1000
+    AiThree =               600
+    OppThree =              300
+    AiTwo =                 200
 
-def isFree(x, y):
-	return x >= 0 and y >= 0 and x < width and y < height and board[x][y] == 0
+    def __init__(self):
+        self.start()
 
-def brain_my(x, y):
-	if isFree(x, y):
-		board[x][y] = 1
-	else:
-		pipeOut("ERROR my move [{},{}]".format(x, y))
-	return
+    def start(self):
+        while True:
+            commandMessage = input().split(" ")
+            command = commandMessage[0]
+            self.function_dictionary[command](self, commandMessage)
 
-def brain_opponents(x, y):
-	if isFree(x, y):
-		board[x][y] = 2
-	else:
-		pipeOut("ERROR opponents's move [{},{}]".format(x, y))
-	return
 
-def brain_block(x, y):
-	if isFree(x,y):
-		board[x][y] = 3
-	else:
-		pipeOut("ERROR winning move [{},{}]".format(x, y))
-	return
+    def setTurnTimeout(self, arg):
+        self.timeout_turn = arg[1]
 
-def brain_takeback(x, y):
-	if x >= 0 and y >= 0 and x < width and y < height and board[x][y] != 0:
-		board[x][y] = 0
-		return 0
-	return 2
+    def setMatchTimeout(self, arg):
+        self.timeout_match = arg[1]
 
-def Do_the_magic_right(y, x):
-	if board[x][y+1] == 2:
-		if board[x][y+1] == 2 and board[x][y+1] == 0:
-			return (y+1)
-		if board[x][y + 1] == 2 and board[x][y + 2] == 0:
-			return(y + 2)
-		if board[x][y + 2] == 2 and board[x][y + 3] == 0:
-			return(y + 3)
-	return (y+1)
+    def setMaxMemory(self, arg):
+        self.max_memory = arg[1]
 
-def Do_the_magic_up(y, x):
-	if (board[x - 1][y] == 2):
-		if (board[x-1][y] == 2 and board[x-2][y] == 0):
-			return (x-2)
-		if(board[x - 2][y] == 2 and board[x - 3][y] == 0):
-			return(x - 3)
-		if(board[x - 3][y] == 2 and board[x - 4][y] == 0):
-			return(x - 4)
-	return (x-1)
+    def setTimeLeft(self, arg):
+        self.time_left = arg[1]
 
-def Do_the_magic_down(y, x):
-	if (board[x + 1][y] == 2):
-		if (board[x+1][y] == 2 and board[x+2] == 0):
-			return (x+2)
-		if(board[x + 2][y] == 2 and board[x + 3][y] == 0):
-			return(x + 3)
-		if(board[x + 3][y] == 2 and board[x + 4][y] == 0):
-			return(x + 4)
-	return (x+1)
+    def setGameType(self, arg):
+        if len(arg) == 1:
+            return
+        self.game_type = arg[1]
 
-def Do_the_magic_left(y, x):
-	if (board[x][y - 1] == 2):
-		if (board[x][y-1] == 2 and board[x][y-2] == 0):
-			return (y - 2)
-		if(board[x][y - 2] == 2 and board[x][y - 3] == 0):
-			return(y - 3)
-		if(board[x][y - 3] == 2 and board[x][y - 4] == 0):
-			return(y - 4)
-	return (y-1)
+    def setRule(self, arg):
+        if len(arg) == 1:
+            return
+        self.rule = arg[1]
 
-def brain_turn():
-	recup_x = int(0)
-	recup_y= int(0)
-	for x in range(0, MAX_BOARD):
-		for y in range(0, MAX_BOARD):
-			if (board[x][y] == 2):
-				recup_x = Do_the_magic_right(y, x)
-				if (recup_x != x):
-					do_mymove(recup_x, y)
-					return
-			if (board[x][y] == 2):
-				recup_x = Do_the_magic_left(y, x)
-				if (recup_x != x):
-					do_mymove(recup_x, y)
-					return
-			if (board[x][y] == 2):
-				recup_y = Do_the_magic_up(y, x)
-				if (recup_y != y):
-					do_mymove(x, recup_y)
-					return
-			if (board[x][y] == 2):
-				recup_y = Do_the_magic_down(y, x)
-				if (recup_y != y):
-					do_mymove(x, recup_y)
-					return
-			recup_x = recup_x + 1
-		recup_y = recup_y + 1
-	xi = random.randint(0, width)
-	yi =  random.randint(0, height)
-	do_mymove(xi, yi)
-	return
+    def setEvaluate(self, arg):
+        if len(arg) == 1:
+            return
+        self.evaluate = arg[1]
 
-def brain_end():
-	pass
+    def setFolder(self, arg):
+        if len(arg) == 1:
+            return
+        self.folder = arg[1]
 
-def brain_about():
-	pipeOut(infotext)
-	pass
 
-def brain_eval(x, y):
-	pass
+    def infoFunction(self, arg):
+        if not arg:
+            return
+        data = arg[1]
+        self.info_dictionary[data](self, arg) if data in self.info_dictionary else print("ERROR message - Unknown info = ignored")
 
-def pipeOut(what):
-	print(what)
-	sys.stdout.flush()
+    def startFunction(self, arg):
+        if (int(arg[1]) > 5):
+            stdout.write("OK\n")
+            self.dimension = int(arg[1])
+            self.board = [[0 for i in range(0, self.dimension+4)] for j in range(0, self.dimension+4)]
+            stdout.flush()
+            return 0
 
-def do_mymove(x, y):
-	while (isFree(x,y) != True):
-		x = random.randint(0, width)
-		y = random.randint(0, height)
-	brain_my(x, y)
-	pipeOut("{},{}".format(x,y))
+    def beginFunction(self, arg):
+        Protocol_funct.play(self)
+        return 0
 
-def suggest(x, y):
-	pipeOut("SUGGEST {},{}".format(x,y))
+    def turnFunction(self, arg):
+        coor = arg[1].split(",")
+        x = int(coor[0])
+        y = int(coor[1])
+        self.board[x][y] = 2
+        Protocol_funct.play(self)
+        return 0
 
-def safeInt(v):
-	try:
-		ret = int(v)
-		return ret
-	except:
-		return None
+    def boardFunction(self, arg):
+        i = 1
+        while i == 1:
+            arg = input().split(",")
+            if (arg[0] == "DONE"):
+                i = 2
+            else:
+                Protocol_funct.fill_board(self, arg)
+        Protocol_funct.play(self)
+        return 0
 
-def get_line():
-	return sys.stdin.readline().strip()
+    def fill_board(self, arg):
+        self.board[int(arg[0])][int(arg[1])] = int(arg[2])
+        return 0
 
-def parse_coord(param):
-	if param.count(",") != 1:
-		return None, None
-	x, y = param.split(",")
-	x, y = [safeInt(v) for v in (x, y)]
-	if any(v is None for v in (x,y)):
-		return None, None
-	if x < 0 or y < 0 or x >= width or y >= height:
-		return None, None
-	return x, y
+    def play(self):
+        self.case = Protocol_funct.minimax(self, 1, True, 0, 0)
+        if self.case[2] == 0:
+            self.case[0] = randint(0, self.dimension-1)
+            self.case[1] = randint(0, self.dimension-1)
+        if Protocol_funct.isFree(self, self.case[0], self.case[1]):
+            x = self.case[0]
+            y = self.case[1]
+        else:
+            while Protocol_funct.isFree == False:
+                x = randint(0,self.dimension-1)
+                y = randint(0,self.dimension-1)
+        self.board[x][y] = 1
+        stdout.write(str(x) + "," + str(y) + "\n")
+        stdout.flush()
+        return 0
 
-def parse_3int_chk(param):
-	"""parse coordinates x,y and player number z"""
-	if param.count(',') != 2:
-		return None, None, None
-	x, y, z = param.split(',')
-	x, y, z = [safeInt(v) for v in (x,y,z)]
-	if any(v is None for v in (x,y,z)):
-		return None, None, None
-	return x, y, z
+    def isFree(self, x, y):
+        if x < self.dimension and y < self.dimension:
+            if self.board[x][y] == 0:
+                return True
+            else:
+                return False
+        else:
+            return False
 
-def get_cmd_param(command, input):
-	"""return word after command if input starts with command, otherwise return None"""
-	cl = command.lower()
-	il = input.lower()
-	n1 = len(command)
-	n2 = len(input)
-	if n1 > n2 or not il.startswith(cl):
-		return None
-	return input[n1:].lstrip()
+    def displayBoard(self, arg):
+        for i in range (0, 20):
+            for j in range (0, 20):
+                stdout.write(" ")
+                stdout.write(str(self.board[i][j]))
+            stdout.write("\n")
+        stdout.write("\n")
 
-def start():
-	global width, height
-	if not width:
-		width = height = 20
-		brain_init()
+    def minimax(self, depth, maximizingPlayer, a, b):
+        if depth == 0:
+            if maximizingPlayer:
+                return Protocol_funct.checkBoard(self, a, b, 2)
+            else:
+                return Protocol_funct.checkBoard(self, a, b, 1)
 
-def do_command(cmd):
-	"""do command cmd"""
-	global info_max_memory, info_timeout_match, info_timeout_turn, info_time_left, info_game_type, info_exact5, info_continuous, info_renju, dataFolder
-	global width, height
-	param = get_cmd_param("info", cmd)
-	if param is not None:
-		info = get_cmd_param("max_memory", param)
-		if info is not None:
-			info_max_memory = int(info)
-			return
-		info = get_cmd_param("timeout_match", param)
-		if info is not None:
-			info_timeout_match = int(info)
-			return
-		info = get_cmd_param("timeout_turn", param)
-		if info is not None:
-			info_timeout_turn = int(info)
-			return
-		info = get_cmd_param("time_left", param)
-		if info is not None:
-			info_time_left = int(info)
-			return
-		info = get_cmd_param("game_type", param)
-		if info is not None:
-			info_game_type = int(info)
-			return
-		info = get_cmd_param("rule", param)
-		if info is not None:
-			e = int(info)
-			info_exact5 = e & 1
-			info_continuous = (e >> 1) & 1
-			info_renju = (e >> 2) & 1
-			return
-		info = get_cmd_param("folder", param)
-		if info is not None:
-			dataFolder = info
-			return
-		info = get_cmd_param("evaluate", param)
-		if DEBUG_EVAL and info is not None:
-			x, y = parse_coord(info)
-			if x is not None and y is not None:
-				brain_eval(x, y)
-			return
-		return
-	param = get_cmd_param("start", cmd)
-	if param is not None:
-		width = safeInt(param)
-		if width is None or width < 5:
-			width = 0
-			pipeOut("ERROR bad START parameter")
-		else:
-			height = width
-			start()
-			brain_init()
-		return
-	param = get_cmd_param("rectstart", cmd)
-	if param is not None:
-		if param.count(',') != 1:
-			width = height = 0
-		else:
-			width,c,height = param.partition(',')
-			width,height = [safeInt(v) for v in (width,height)]
-		if width is None or width < 5 or height is None or height < 5:
-			width = height = 0
-			pipeOut("ERROR bad RECTSTART parameters")
-		else:
-			start()
-			brain_init()
-		return
-	param = get_cmd_param("restart", cmd)
-	if param is not None:
-		start()
-		brain_restart()
-		return
-	param = get_cmd_param("turn", cmd)
-	if param is not None:
-		start()
-		x, y = parse_coord(param)
-		if x is None or y is None:
-			pipeOut("ERROR bad coordinates")
-		else:
-			brain_opponents(x, y)
-			brain_turn()
-		return
-	param = get_cmd_param("play", cmd)
-	if param is not None:
-		start()
-		x, y = parse_coord(param)
-		if x is None or y is None:
-			pipeOut("ERROR bad coordinates")
-		else:
-			do_mymove(x, y)
-		return
-	param = get_cmd_param("begin", cmd)
-	if param is not None:
-		start()
-		brain_turn()
-		return
-	param = get_cmd_param("about", cmd)
-	if param is not None:
-		if ABOUT_FUNC:
-			brain_about()
-		else:
-			pipeOut(infotext)
-		return
-	param = get_cmd_param("end", cmd)
-	if param is not None:
-		brain_end()
-		sys.exit(0)
-		return
-	param = get_cmd_param("board", cmd)
-	if param is not None:
-		start()
-		while True:
-			cmd = get_line()
-			x,y,who = parse_3int_chk(cmd)
-			if who == 1:
-				brain_my(x, y)
-			elif who == 2:
-				brain_opponents(x, y)
-			elif who == 3:
-				brain_block(x, y)
-			else:
-				if cmd.lower() != "done":
-					pipeOut("ERROR x,y,who or DONE expected after BOARD")
-				break
-		return
-	param = get_cmd_param("takeback", cmd)
-	if param is not None:
-		start()
-		t = "ERROR bad coordinates"
-		x, y = parse_coord(param)
-		if x is not None and y is not None:
-			e = brain_takeback(x, y)
-			if e == 0:
-				t = "OK"
-			elif e == 1:
-				t = "UNKNOWN"
-		pipeOut(t)
-		return
-	pipeOut("UNKNOWN command {}".format(cmd))
+        if maximizingPlayer:
+            self.maxEval = [0, 0, 0]
+            for i in range (0, self.dimension):
+                for j in range (0, self.dimension):
+                    if self.board[i][j] == 0:
+                        self.board[i][j] = 1
+                        posEval = Protocol_funct.minimax(self, depth - 1, False, i, j)
+                        self.board[i][j] = 0
+                        if self.maxEval[2] < posEval[2]:
+                            self.maxEval = [i, j, posEval[2]]
+            return self.maxEval
+
+        else:
+            for i in range (0,self.dimension):
+                for j in range (0,self.dimension):
+                    if self.board[i][j] == 0:
+                        self.board[i][j] = 2
+                        posEval = Protocol_funct.minimax(self, depth - 1, True, i, j)
+                        self.board[i][j] = 0
+                        if self.minEval[2] > posEval[2]:
+                            self.minEval = [i, j, posEval[2]]
+            return self.minEval
+
+    def checkBoard(self, i, j, player):
+        positionEval = 0
+        positionEval += Protocol_funct.checkFourAndOppenedThree(self, i, j, player)
+        positionEval += Protocol_funct.checkTwo(self, i, j, player)
+        positionEval += Protocol_funct.checkThree(self, i, j, player)
+        positionEval += Protocol_funct.checkFour(self, i, j, player)
+        positionEval += Protocol_funct.checkFive(self, i, j, player)
+        if player == 1:
+            player = 2
+        else:
+            player = 1
+        self.board[i][j] = player
+        positionEval += Protocol_funct.checkFourAndOppenedThree(self, i, j, player)
+        positionEval += Protocol_funct.checkThree(self, i, j, player)
+        positionEval += Protocol_funct.checkFour(self, i, j, player)
+        positionEval += Protocol_funct.checkFive(self, i, j, player)
+        return [i, j, positionEval]
+
+    def checkFourAndOppenedThree(self, x, y, player):
+        saveX = x
+        saveY = y
+        positionEval = 0
+        checkOppenedThree = 0
+        checkFour = 0
+
+        while self.board[x-1][y] == player:
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] and Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+3, y) and self.board[x-1][y] == 0 and self.board[x+3][y] == 0:
+                checkOppenedThree = 1
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y] and ((Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+4, y) and self.board[x-1][y] == 0) or self.board[x+4][y] == 0):
+                checkFour = 1
+
+        x = saveX
+        y = saveY
+        while self.board[x][y-1] == player:
+            y -= 1
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] and Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+3) and self.board[x][y-1] == 0 and self.board[x][y+3] == 0:
+                checkOppenedThree = 1
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3] and ((Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+4) and self.board[x][y-1] == 0) or self.board[x][y+4] == 0):
+                checkFour = 1
+
+        x = saveX
+        y = saveY
+        while self.board[x-1][y-1] == player:
+            y -= 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] and Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+3, y+3) and self.board[x-1][y-1] == 0 and self.board[x+3][y+3] == 0:
+                checkOppenedThree = 1
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3] and ((Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+4, y+4) and self.board[x-1][y-1] == 0) or self.board[x+4][y+4] == 0):
+                checkFour = 1
+
+        x = saveX
+        y = saveY
+        while self.board[x-1][y+1] == player:
+            y += 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] and Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+3, y-3) and self.board[x-1][y+1] == 0 and self.board[x+3][y-3] == 0:
+                checkOppenedThree = 1
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] == self.board[x+3][y-3] and (Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+4, y-4) and (self.board[x-1][y+1] == 0 or self.board[x+4][y-4] == 0)):
+                checkFour = 1
+
+        if checkFour == 1 and checkOppenedThree == 1:
+            if player == 1:
+                positionEval = self.AiFourAndOppenedThree
+            if player == 2:
+                positionEval = self.OppFourAndOppenedThree
+
+        return positionEval
+
+    def checkFive(self, x, y, player):
+        win = 0
+        positionEval = 0
+        saveX = x
+        saveY = y
+        while self.board[x-1][y] == player:
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y] == self.board[x+4][y]:
+            win = 1
+        x = saveX
+        y = saveY
+        while self.board[x][y-1] == player:
+            y -= 1
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3] == self.board[x][y+4]:
+            win = 1
+        x = saveX
+        y = saveY
+        while self.board[x-1][y-1] == player:
+            y -= 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3] == self.board[x+4][y+4]:
+            win = 1
+        x = saveX
+        y = saveY
+        while self.board[x-1][y+1] == player:
+            y += 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] == self.board[x+3][y-3] == self.board[x+4][y-4]:
+            win = 1
+
+        if win == 1:
+            if player == 1:
+                positionEval = self.AiFive
+            else:
+                positionEval = self.OppFive
+
+        return positionEval
+
+    def checkFourWithHole(self, x, y, player):
+        check = 0
+        positionEval = 0
+        count = 0
+        for i in range (0,4):
+            if self.board[x+i][y] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x-i][y] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x][y+i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x][y-i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x+i][y+i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x-i][y+i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x+i][y-i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+        count = 0
+        for i in range (0,4):
+            if self.board[x-i][y-i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+
+        if check >= 1:
+            positionEval = self.AiOppenedFour
+        else:
+            positionEval = self.AiFour
+
+        return positionEval
+
+    def checkFour(self, x, y, player):
+        saveX = x
+        saveY = y
+        positionEval = 0
+        check = 0
+        checkOppenedFour = 0
+        count = 0
+        while self.board[x-1][y] == player:
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y]:
+            if (Protocol_funct.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or (Protocol_funct.checkBorder(self, x+4, y) and self.board[x+4][y] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+4, y) and self.board[x-1][y] == 0 and self.board[x+4][y] == 0:
+                checkOppenedFour = 1
+
+        x = saveX
+        y = saveY
+        while self.board[x][y-1] == player:
+            y -= 1
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3]:
+            if (Protocol_funct.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or (Protocol_funct.checkBorder(self, x, y+4) and self.board[x][y+4] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+4) and self.board[x][y-1] == 0 and self.board[x][y+4] == 0:
+                checkOppenedFour = 1
+        for i in range (0,4):
+            if self.board[x][y+i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+
+        x = saveX
+        y = saveY
+        while self.board[x-1][y-1] == player:
+            y -= 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3]:
+            if (Protocol_funct.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or (Protocol_funct.checkBorder(self, x+4, y+4) and self.board[x+4][y+4] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+4, y+4) and self.board[x-1][y-1] == 0 and self.board[x+4][y+4] == 0:
+                checkOppenedFour = 1
+        for i in range (0,4):
+            if self.board[x+i][y+i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+
+        x = saveX
+        y = saveY
+        while self.board[x-1][y+1] == player:
+            y += 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] == self.board[x+3][y-3]:
+            if (Protocol_funct.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or (Protocol_funct.checkBorder(self, x+4, y-4) and self.board[x+4][y-4] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+4, y-4) and self.board[x-1][y+1] == 0 and self.board[x+4][y-4] == 0:
+                checkOppenedFour = 1
+        for i in range (0,4):
+            if self.board[x+i][y-i] == player:
+                count += 1
+        if count >= 4:
+            check += 1
+
+        if check > 1 or checkOppenedFour == 1:
+            if player == 1:
+                positionEval += self.AiOppenedFour
+            else:
+                positionEval += self.OppOppenedFour
+        else:
+            if check == 1:
+                if player == 1:
+                    positionEval += self.AiFour
+                else:
+                    positionEval += self.OppFour
+
+        return positionEval
+
+    def checkThree(self, x, y, player):
+        saveX = x
+        saveY = y
+        positionEval = 0
+        check = 0
+        checkOppenedThree = 0
+        while self.board[x-1][y] == player:
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y]:
+            if (Protocol_funct.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or (Protocol_funct.checkBorder(self, x+3, y) and self.board[x+3][y] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+3, y) and self.board[x-1][y] == 0 and self.board[x+3][y] == 0:
+                checkOppenedThree += 1
+
+        x = saveX
+        y = saveY
+        while self.board[x][y-1] == player:
+            y -= 1
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2]:
+            if (Protocol_funct.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or (Protocol_funct.checkBorder(self, x, y+3) and  self.board[x][y+3] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+3) and self.board[x][y-1] == 0 and self.board[x][y+3] == 0:
+                checkOppenedThree += 1
+
+        x = saveX
+        y = saveY
+        while self.board[x-1][y-1] == player:
+            y -= 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2]:
+            if (Protocol_funct.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or (Protocol_funct.checkBorder(self, x+3, y+3) and self.board[x+3][y+3] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+3, y+3) and self.board[x-1][y-1] == 0 and self.board[x+3][y+3] == 0:
+                checkOppenedThree += 1
+
+        x = saveX
+        y = saveY
+        while self.board[x-1][y+1] == player:
+            y += 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2]:
+            if (Protocol_funct.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or (Protocol_funct.checkBorder(self, x+3, y-3) and self.board[x+3][y-3] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+3, y-3) and self.board[x-1][y+1] == 0 and self.board[x+3][y-3] == 0:
+                checkOppenedThree += 1
+
+        if checkOppenedThree > 1:
+            if player == 1:
+                positionEval += self.AiTwoOppenedThree
+            else:
+                positionEval += self.OppTwoOppenedThree
+        else:
+            if check > 1 or checkOppenedThree == 1:
+                if player == 1:
+                    positionEval += self.AiOppenedThree
+                else:
+                    positionEval += self.OppOppenedThree
+            else:
+                if check == 1:
+                    if player == 1:
+                        positionEval += self.AiThree
+                    else:
+                        positionEval += self.OppThree
+
+        return positionEval
+
+    def checkTwo(self, x, y, player):
+        saveX = x
+        saveY = y
+        positionEval = 0
+        check = 0
+        checkOppenedTwo = 0
+        while self.board[x-1][y] == player:
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y]:
+            if (Protocol_funct.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or (Protocol_funct.checkBorder(self, x+2, y) and self.board[x+2][y] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+2, y) and self.board[x-1][y] == 0 and self.board[x+2][y] == 0:
+                checkOppenedTwo = 1
+
+        x = saveX
+        y = saveY
+        while self.board[x][y-1] == player:
+            y -= 1
+        if self.board[x][y] == self.board[x][y+1]:
+            if (Protocol_funct.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or (Protocol_funct.checkBorder(self, x, y+2) and self.board[x][y+2] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+2) and self.board[x][y-1] == 0 and self.board[x][y+2] == 0:
+                checkOppenedTwo = 1
+        x = saveX
+        y = saveY
+        while self.board[x-1][y-1] == player:
+            y -= 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y+1]:
+            if (Protocol_funct.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or (Protocol_funct.checkBorder(self, x+2, y+2) and self.board[x+2][y+2] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+2, y+2) and self.board[x-1][y-1] == 0 and self.board[x+2][y+2] == 0:
+                checkOppenedTwo = 1
+        x = saveX
+        y = saveY
+        while self.board[x-1][y+1] == player:
+            y += 1
+            x -= 1
+        if self.board[x][y] == self.board[x+1][y-1]:
+            if (Protocol_funct.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or (Protocol_funct.checkBorder(self, x+2, y-2) and self.board[x+2][y-2] == 0):
+                check += 1
+            if Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+2, y-2) and self.board[x-1][y+1] == 0 and self.board[x+2][y-2] == 0:
+                checkOppenedTwo = 1
+
+        if check > 1 or checkOppenedTwo == 1:
+            positionEval += self.AiOppenedTwo
+        else:
+            if check == 1:
+                positionEval += self.AiTwo
+        return positionEval
+
+    def checkBorder(self, x, y):
+        if x < 0 or y < 0 or x >= self.dimension or y >= self.dimension:
+            return False
+        else:
+            return True
+
+    function_dictionary = {
+        "START":startFunction,
+        "TURN":turnFunction,
+        "BEGIN":beginFunction,
+        "BOARD":boardFunction,
+        "INFO":infoFunction,
+        "DISPLAY":displayBoard
+    }
+
+    info_dictionary = {
+        "timeout_turn":setTurnTimeout,
+        "timeout_match":setMatchTimeout,
+        "max_memory":setMaxMemory,
+        "time_left":setTimeLeft,
+        "game_type":setGameType,
+        "rule":setRule,
+        "evaluate":setEvaluate,
+        "folder":setFolder
+    }
 
 def main():
-	while True:
-		cmd = get_line()
-		do_command(cmd)
+    Protocol_funct()
+    return (0)
 
 if __name__ == "__main__":
-	main()
+    main()
