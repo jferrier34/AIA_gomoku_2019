@@ -2,93 +2,40 @@
 from sys import stdout, exit
 from random import randint
 
-class Protocol_funct:
-
-    timeout_turn = 0
-    timeout_match = 0
-    max_memory = 0
-    time_left = 0
-    game_type = 0
-    rule = 0
-    evaluate = 0
-    folder = 0
-    player = 0
-
-    dimension = 0
-    board = 0
-
-    minEval = [0, 0, 100000000000]
-    maxEval = [0, 0, -100000000000]
-
-    case = [0, 0, 0]
-
-    AiFive =                9000000000000
-    OppFive =               900000000000
-    AiOppenedFour =         90000000000
-    OppOppenedFour =        9000000000
-    AiFourAndOppenedThree = 900000000
-    OppFourAndOppenedThree= 90000000
-    AiTwoOppenedThree =     9000000
-    OppTwoOppenedThree =    900000
-    AiWinningPattern =      500000
-    AiOppenedThree =        15000
-    OppOppenedThree =       5000
-    AiFour =                3000
-    OppFour =               2000
-    AiOppenedTwo =          1000
-    AiThree =               600
-    OppThree =              300
-    AiTwo =                 200
-
-    def __init__(self):
-        self.start()
-
-    def start(self):
-        while True:
-            commandMessage = input().split(" ")
-            command = commandMessage[0]
-            self.function_dictionary[command](self, commandMessage)
-
-
+class gomoku_ai:
+    ##information fonctions
+    ##
     def setTurnTimeout(self, arg):
         self.timeout_turn = arg[1]
-
     def setMatchTimeout(self, arg):
         self.timeout_match = arg[1]
-
     def setMaxMemory(self, arg):
         self.max_memory = arg[1]
-
     def setTimeLeft(self, arg):
         self.time_left = arg[1]
-
     def setGameType(self, arg):
         if len(arg) == 1:
             return
         self.game_type = arg[1]
-
     def setRule(self, arg):
         if len(arg) == 1:
             return
         self.rule = arg[1]
-
     def setEvaluate(self, arg):
         if len(arg) == 1:
             return
         self.evaluate = arg[1]
-
     def setFolder(self, arg):
         if len(arg) == 1:
             return
         self.folder = arg[1]
-
-
     def infoFunction(self, arg):
         if not arg:
             return
         data = arg[1]
         self.info_dictionary[data](self, arg) if data in self.info_dictionary else print("ERROR message - Unknown info = ignored")
 
+    #PLAY FUNCTIONS
     def startFunction(self, arg):
         if (int(arg[1]) > 5):
             stdout.write("OK\n")
@@ -98,7 +45,7 @@ class Protocol_funct:
             return 0
 
     def beginFunction(self, arg):
-        Protocol_funct.play(self)
+        gomoku_ai.play(self)
         return 0
 
     def turnFunction(self, arg):
@@ -106,7 +53,7 @@ class Protocol_funct:
         x = int(coor[0])
         y = int(coor[1])
         self.board[x][y] = 2
-        Protocol_funct.play(self)
+        gomoku_ai.play(self)
         return 0
 
     def boardFunction(self, arg):
@@ -116,8 +63,8 @@ class Protocol_funct:
             if (arg[0] == "DONE"):
                 i = 2
             else:
-                Protocol_funct.fill_board(self, arg)
-        Protocol_funct.play(self)
+                gomoku_ai.fill_board(self, arg)
+        gomoku_ai.play(self)
         return 0
 
     def fill_board(self, arg):
@@ -125,15 +72,15 @@ class Protocol_funct:
         return 0
 
     def play(self):
-        self.case = Protocol_funct.minimax(self, 1, True, 0, 0)
+        self.case = gomoku_ai.minmax(self, 1, True, 0, 0)
         if self.case[2] == 0:
             self.case[0] = randint(0, self.dimension-1)
             self.case[1] = randint(0, self.dimension-1)
-        if Protocol_funct.isFree(self, self.case[0], self.case[1]):
+        if gomoku_ai.isFree(self, self.case[0], self.case[1]):
             x = self.case[0]
             y = self.case[1]
         else:
-            while Protocol_funct.isFree == False:
+            while gomoku_ai.isFree == False:
                 x = randint(0,self.dimension-1)
                 y = randint(0,self.dimension-1)
         self.board[x][y] = 1
@@ -158,108 +105,102 @@ class Protocol_funct:
             stdout.write("\n")
         stdout.write("\n")
 
-    def minimax(self, depth, maximizingPlayer, a, b):
+    def minmax(self, depth, maximizingPlayer, a, b):
         if depth == 0:
             if maximizingPlayer:
-                return Protocol_funct.checkBoard(self, a, b, 2)
+                return gomoku_ai.checkBoard(self, a, b, 2)
             else:
-                return Protocol_funct.checkBoard(self, a, b, 1)
-
+                return gomoku_ai.checkBoard(self, a, b, 1)
         if maximizingPlayer:
             self.maxEval = [0, 0, 0]
             for i in range (0, self.dimension):
                 for j in range (0, self.dimension):
                     if self.board[i][j] == 0:
                         self.board[i][j] = 1
-                        posEval = Protocol_funct.minimax(self, depth - 1, False, i, j)
+                        posEval = gomoku_ai.minmax(self, depth - 1, False, i, j)
                         self.board[i][j] = 0
                         if self.maxEval[2] < posEval[2]:
                             self.maxEval = [i, j, posEval[2]]
             return self.maxEval
-
         else:
             for i in range (0,self.dimension):
                 for j in range (0,self.dimension):
                     if self.board[i][j] == 0:
                         self.board[i][j] = 2
-                        posEval = Protocol_funct.minimax(self, depth - 1, True, i, j)
+                        posEval = gomoku_ai.minmax(self, depth - 1, True, i, j)
                         self.board[i][j] = 0
                         if self.minEval[2] > posEval[2]:
                             self.minEval = [i, j, posEval[2]]
             return self.minEval
 
+    ##CHECK FUNCTIONS
     def checkBoard(self, i, j, player):
-        positionEval = 0
-        positionEval += Protocol_funct.checkFourAndOppenedThree(self, i, j, player)
-        positionEval += Protocol_funct.checkTwo(self, i, j, player)
-        positionEval += Protocol_funct.checkThree(self, i, j, player)
-        positionEval += Protocol_funct.checkFour(self, i, j, player)
-        positionEval += Protocol_funct.checkFive(self, i, j, player)
+        movements = 0
+        movements += gomoku_ai.checkForThreeAndFour(self, i, j, player)
+        movements += gomoku_ai.checkForTwo(self, i, j, player)
+        movements += gomoku_ai.checkForThree(self, i, j, player)
+        movements += gomoku_ai.checkForFour(self, i, j, player)
+        movements += gomoku_ai.checkForFive(self, i, j, player)
         if player == 1:
             player = 2
         else:
             player = 1
         self.board[i][j] = player
-        positionEval += Protocol_funct.checkFourAndOppenedThree(self, i, j, player)
-        positionEval += Protocol_funct.checkThree(self, i, j, player)
-        positionEval += Protocol_funct.checkFour(self, i, j, player)
-        positionEval += Protocol_funct.checkFive(self, i, j, player)
-        return [i, j, positionEval]
+        movements += gomoku_ai.checkForThreeAndFour(self, i, j, player)
+        movements += gomoku_ai.checkForThree(self, i, j, player)
+        movements += gomoku_ai.checkForFour(self, i, j, player)
+        movements += gomoku_ai.checkForFive(self, i, j, player)
+        return [i, j, movements]
 
-    def checkFourAndOppenedThree(self, x, y, player):
+    def checkForThreeAndFour(self, x, y, player):
         saveX = x
         saveY = y
-        positionEval = 0
+        movements = 0
         checkOppenedThree = 0
-        checkFour = 0
-
+        checkForFour = 0
         while self.board[x-1][y] == player:
             x -= 1
-        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] and Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+3, y) and self.board[x-1][y] == 0 and self.board[x+3][y] == 0:
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] and gomoku_ai.checkBorder(self, x-1, y) and gomoku_ai.checkBorder(self, x+3, y) and self.board[x-1][y] == 0 and self.board[x+3][y] == 0:
                 checkOppenedThree = 1
-        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y] and ((Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+4, y) and self.board[x-1][y] == 0) or self.board[x+4][y] == 0):
-                checkFour = 1
-
+        if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y] and (( gomoku_ai.checkBorder(self, x-1, y) and gomoku_ai.checkBorder(self, x+4, y) and self.board[x-1][y] == 0) or self.board[x+4][y] == 0):
+                checkForFour = 1
         x = saveX
         y = saveY
         while self.board[x][y-1] == player:
             y -= 1
-        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] and Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+3) and self.board[x][y-1] == 0 and self.board[x][y+3] == 0:
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] and gomoku_ai.checkBorder(self, x, y-1) and gomoku_ai.checkBorder(self, x, y+3) and self.board[x][y-1] == 0 and self.board[x][y+3] == 0:
                 checkOppenedThree = 1
-        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3] and ((Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+4) and self.board[x][y-1] == 0) or self.board[x][y+4] == 0):
-                checkFour = 1
-
+        if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3] and (( gomoku_ai.checkBorder(self, x, y-1) and gomoku_ai.checkBorder(self, x, y+4) and self.board[x][y-1] == 0) or self.board[x][y+4] == 0):
+                checkForFour = 1
         x = saveX
         y = saveY
         while self.board[x-1][y-1] == player:
             y -= 1
             x -= 1
-        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] and Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+3, y+3) and self.board[x-1][y-1] == 0 and self.board[x+3][y+3] == 0:
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] and gomoku_ai.checkBorder(self, x-1, y-1) and gomoku_ai.checkBorder(self, x+3, y+3) and self.board[x-1][y-1] == 0 and self.board[x+3][y+3] == 0:
                 checkOppenedThree = 1
-        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3] and ((Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+4, y+4) and self.board[x-1][y-1] == 0) or self.board[x+4][y+4] == 0):
-                checkFour = 1
-
+        if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3] and (( gomoku_ai.checkBorder(self, x-1, y-1) and gomoku_ai.checkBorder(self, x+4, y+4) and self.board[x-1][y-1] == 0) or self.board[x+4][y+4] == 0):
+                checkForFour = 1
         x = saveX
         y = saveY
         while self.board[x-1][y+1] == player:
             y += 1
             x -= 1
-        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] and Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+3, y-3) and self.board[x-1][y+1] == 0 and self.board[x+3][y-3] == 0:
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] and gomoku_ai.checkBorder(self, x-1, y+1) and gomoku_ai.checkBorder(self, x+3, y-3) and self.board[x-1][y+1] == 0 and self.board[x+3][y-3] == 0:
                 checkOppenedThree = 1
-        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] == self.board[x+3][y-3] and (Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+4, y-4) and (self.board[x-1][y+1] == 0 or self.board[x+4][y-4] == 0)):
-                checkFour = 1
+        if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] == self.board[x+3][y-3] and ( gomoku_ai.checkBorder(self, x-1, y+1) and gomoku_ai.checkBorder(self, x+4, y-4) and (self.board[x-1][y+1] == 0 or self.board[x+4][y-4] == 0)):
+                checkForFour = 1
 
-        if checkFour == 1 and checkOppenedThree == 1:
+        if checkForFour == 1 and checkOppenedThree == 1:
             if player == 1:
-                positionEval = self.AiFourAndOppenedThree
+                movements = self.ia_has_four_and_three
             if player == 2:
-                positionEval = self.OppFourAndOppenedThree
+                movements = self.opponent_has_four
+        return movements
 
-        return positionEval
-
-    def checkFive(self, x, y, player):
+    def checkForFive(self, x, y, player):
         win = 0
-        positionEval = 0
+        movements = 0
         saveX = x
         saveY = y
         while self.board[x-1][y] == player:
@@ -289,15 +230,14 @@ class Protocol_funct:
 
         if win == 1:
             if player == 1:
-                positionEval = self.AiFive
+                movements = self.ia_has_five_full
             else:
-                positionEval = self.OppFive
+                movements = self.opponent_has_five_full
+        return movements
 
-        return positionEval
-
-    def checkFourWithHole(self, x, y, player):
+    def checkForFourWithHole(self, x, y, player):
         check = 0
-        positionEval = 0
+        movements = 0
         count = 0
         for i in range (0,4):
             if self.board[x+i][y] == player:
@@ -346,102 +286,95 @@ class Protocol_funct:
                 count += 1
         if count >= 4:
             check += 1
-
         if check >= 1:
-            positionEval = self.AiOppenedFour
+            movements = self.ia_has_openned_four
         else:
-            positionEval = self.AiFour
+            movements = self.ia_has_four
+        return movements
 
-        return positionEval
-
-    def checkFour(self, x, y, player):
+    def checkForFour(self, x, y, player):
         saveX = x
         saveY = y
-        positionEval = 0
+        movements = 0
         check = 0
         checkOppenedFour = 0
         count = 0
         while self.board[x-1][y] == player:
             x -= 1
         if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y]:
-            if (Protocol_funct.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or (Protocol_funct.checkBorder(self, x+4, y) and self.board[x+4][y] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or ( gomoku_ai.checkBorder(self, x+4, y) and self.board[x+4][y] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+4, y) and self.board[x-1][y] == 0 and self.board[x+4][y] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y) and gomoku_ai.checkBorder(self, x+4, y) and self.board[x-1][y] == 0 and self.board[x+4][y] == 0:
                 checkOppenedFour = 1
-
         x = saveX
         y = saveY
         while self.board[x][y-1] == player:
             y -= 1
         if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3]:
-            if (Protocol_funct.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or (Protocol_funct.checkBorder(self, x, y+4) and self.board[x][y+4] == 0):
+            if ( gomoku_ai.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or ( gomoku_ai.checkBorder(self, x, y+4) and self.board[x][y+4] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+4) and self.board[x][y-1] == 0 and self.board[x][y+4] == 0:
+            if gomoku_ai.checkBorder(self, x, y-1) and gomoku_ai.checkBorder(self, x, y+4) and self.board[x][y-1] == 0 and self.board[x][y+4] == 0:
                 checkOppenedFour = 1
         for i in range (0,4):
             if self.board[x][y+i] == player:
                 count += 1
         if count >= 4:
             check += 1
-
         x = saveX
         y = saveY
         while self.board[x-1][y-1] == player:
             y -= 1
             x -= 1
         if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3]:
-            if (Protocol_funct.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or (Protocol_funct.checkBorder(self, x+4, y+4) and self.board[x+4][y+4] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or ( gomoku_ai.checkBorder(self, x+4, y+4) and self.board[x+4][y+4] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+4, y+4) and self.board[x-1][y-1] == 0 and self.board[x+4][y+4] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y-1) and gomoku_ai.checkBorder(self, x+4, y+4) and self.board[x-1][y-1] == 0 and self.board[x+4][y+4] == 0:
                 checkOppenedFour = 1
         for i in range (0,4):
             if self.board[x+i][y+i] == player:
                 count += 1
         if count >= 4:
             check += 1
-
         x = saveX
         y = saveY
         while self.board[x-1][y+1] == player:
             y += 1
             x -= 1
         if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2] == self.board[x+3][y-3]:
-            if (Protocol_funct.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or (Protocol_funct.checkBorder(self, x+4, y-4) and self.board[x+4][y-4] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or ( gomoku_ai.checkBorder(self, x+4, y-4) and self.board[x+4][y-4] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+4, y-4) and self.board[x-1][y+1] == 0 and self.board[x+4][y-4] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y+1) and gomoku_ai.checkBorder(self, x+4, y-4) and self.board[x-1][y+1] == 0 and self.board[x+4][y-4] == 0:
                 checkOppenedFour = 1
         for i in range (0,4):
             if self.board[x+i][y-i] == player:
                 count += 1
         if count >= 4:
             check += 1
-
         if check > 1 or checkOppenedFour == 1:
             if player == 1:
-                positionEval += self.AiOppenedFour
+                movements += self.ia_has_openned_four
             else:
-                positionEval += self.OppOppenedFour
+                movements += self.opponnent_has_openned_four
         else:
             if check == 1:
                 if player == 1:
-                    positionEval += self.AiFour
+                    movements += self.ia_has_four
                 else:
-                    positionEval += self.OppFour
+                    movements += self.opponent_has_four
+        return movements
 
-        return positionEval
-
-    def checkThree(self, x, y, player):
+    def checkForThree(self, x, y, player):
         saveX = x
         saveY = y
-        positionEval = 0
+        movements = 0
         check = 0
         checkOppenedThree = 0
         while self.board[x-1][y] == player:
             x -= 1
         if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y]:
-            if (Protocol_funct.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or (Protocol_funct.checkBorder(self, x+3, y) and self.board[x+3][y] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or ( gomoku_ai.checkBorder(self, x+3, y) and self.board[x+3][y] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+3, y) and self.board[x-1][y] == 0 and self.board[x+3][y] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y) and gomoku_ai.checkBorder(self, x+3, y) and self.board[x-1][y] == 0 and self.board[x+3][y] == 0:
                 checkOppenedThree += 1
 
         x = saveX
@@ -449,9 +382,9 @@ class Protocol_funct:
         while self.board[x][y-1] == player:
             y -= 1
         if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2]:
-            if (Protocol_funct.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or (Protocol_funct.checkBorder(self, x, y+3) and  self.board[x][y+3] == 0):
+            if ( gomoku_ai.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or ( gomoku_ai.checkBorder(self, x, y+3) and  self.board[x][y+3] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+3) and self.board[x][y-1] == 0 and self.board[x][y+3] == 0:
+            if gomoku_ai.checkBorder(self, x, y-1) and gomoku_ai.checkBorder(self, x, y+3) and self.board[x][y-1] == 0 and self.board[x][y+3] == 0:
                 checkOppenedThree += 1
 
         x = saveX
@@ -460,9 +393,9 @@ class Protocol_funct:
             y -= 1
             x -= 1
         if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2]:
-            if (Protocol_funct.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or (Protocol_funct.checkBorder(self, x+3, y+3) and self.board[x+3][y+3] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or ( gomoku_ai.checkBorder(self, x+3, y+3) and self.board[x+3][y+3] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+3, y+3) and self.board[x-1][y-1] == 0 and self.board[x+3][y+3] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y-1) and gomoku_ai.checkBorder(self, x+3, y+3) and self.board[x-1][y-1] == 0 and self.board[x+3][y+3] == 0:
                 checkOppenedThree += 1
 
         x = saveX
@@ -471,53 +404,52 @@ class Protocol_funct:
             y += 1
             x -= 1
         if self.board[x][y] == self.board[x+1][y-1] == self.board[x+2][y-2]:
-            if (Protocol_funct.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or (Protocol_funct.checkBorder(self, x+3, y-3) and self.board[x+3][y-3] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or ( gomoku_ai.checkBorder(self, x+3, y-3) and self.board[x+3][y-3] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+3, y-3) and self.board[x-1][y+1] == 0 and self.board[x+3][y-3] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y+1) and gomoku_ai.checkBorder(self, x+3, y-3) and self.board[x-1][y+1] == 0 and self.board[x+3][y-3] == 0:
                 checkOppenedThree += 1
 
         if checkOppenedThree > 1:
             if player == 1:
-                positionEval += self.AiTwoOppenedThree
+                movements += self.ia_has_three_and_two
             else:
-                positionEval += self.OppTwoOppenedThree
+                movements += self.opponnent_has_three_and_two
         else:
             if check > 1 or checkOppenedThree == 1:
                 if player == 1:
-                    positionEval += self.AiOppenedThree
+                    movements += self.ia_has_openned_three
                 else:
-                    positionEval += self.OppOppenedThree
+                    movements += self.opponnent_has_opened_three
             else:
                 if check == 1:
                     if player == 1:
-                        positionEval += self.AiThree
+                        movements += self.ia_has_three
                     else:
-                        positionEval += self.OppThree
+                        movements += self.opponent_has_three
 
-        return positionEval
+        return movements
 
-    def checkTwo(self, x, y, player):
+    def checkForTwo(self, x, y, player):
         saveX = x
         saveY = y
-        positionEval = 0
+        movements = 0
         check = 0
         checkOppenedTwo = 0
         while self.board[x-1][y] == player:
             x -= 1
         if self.board[x][y] == self.board[x+1][y]:
-            if (Protocol_funct.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or (Protocol_funct.checkBorder(self, x+2, y) and self.board[x+2][y] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y) and self.board[x-1][y] == 0) or ( gomoku_ai.checkBorder(self, x+2, y) and self.board[x+2][y] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y) and Protocol_funct.checkBorder(self, x+2, y) and self.board[x-1][y] == 0 and self.board[x+2][y] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y) and gomoku_ai.checkBorder(self, x+2, y) and self.board[x-1][y] == 0 and self.board[x+2][y] == 0:
                 checkOppenedTwo = 1
-
         x = saveX
         y = saveY
         while self.board[x][y-1] == player:
             y -= 1
         if self.board[x][y] == self.board[x][y+1]:
-            if (Protocol_funct.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or (Protocol_funct.checkBorder(self, x, y+2) and self.board[x][y+2] == 0):
+            if ( gomoku_ai.checkBorder(self, x, y-1) and self.board[x][y-1] == 0) or ( gomoku_ai.checkBorder(self, x, y+2) and self.board[x][y+2] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x, y-1) and Protocol_funct.checkBorder(self, x, y+2) and self.board[x][y-1] == 0 and self.board[x][y+2] == 0:
+            if gomoku_ai.checkBorder(self, x, y-1) and gomoku_ai.checkBorder(self, x, y+2) and self.board[x][y-1] == 0 and self.board[x][y+2] == 0:
                 checkOppenedTwo = 1
         x = saveX
         y = saveY
@@ -525,9 +457,9 @@ class Protocol_funct:
             y -= 1
             x -= 1
         if self.board[x][y] == self.board[x+1][y+1]:
-            if (Protocol_funct.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or (Protocol_funct.checkBorder(self, x+2, y+2) and self.board[x+2][y+2] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y-1) and self.board[x-1][y-1] == 0) or ( gomoku_ai.checkBorder(self, x+2, y+2) and self.board[x+2][y+2] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y-1) and Protocol_funct.checkBorder(self, x+2, y+2) and self.board[x-1][y-1] == 0 and self.board[x+2][y+2] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y-1) and gomoku_ai.checkBorder(self, x+2, y+2) and self.board[x-1][y-1] == 0 and self.board[x+2][y+2] == 0:
                 checkOppenedTwo = 1
         x = saveX
         y = saveY
@@ -535,17 +467,16 @@ class Protocol_funct:
             y += 1
             x -= 1
         if self.board[x][y] == self.board[x+1][y-1]:
-            if (Protocol_funct.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or (Protocol_funct.checkBorder(self, x+2, y-2) and self.board[x+2][y-2] == 0):
+            if ( gomoku_ai.checkBorder(self, x-1, y+1) and self.board[x-1][y+1] == 0) or ( gomoku_ai.checkBorder(self, x+2, y-2) and self.board[x+2][y-2] == 0):
                 check += 1
-            if Protocol_funct.checkBorder(self, x-1, y+1) and Protocol_funct.checkBorder(self, x+2, y-2) and self.board[x-1][y+1] == 0 and self.board[x+2][y-2] == 0:
+            if gomoku_ai.checkBorder(self, x-1, y+1) and gomoku_ai.checkBorder(self, x+2, y-2) and self.board[x-1][y+1] == 0 and self.board[x+2][y-2] == 0:
                 checkOppenedTwo = 1
-
         if check > 1 or checkOppenedTwo == 1:
-            positionEval += self.AiOppenedTwo
+            movements += self.ia_has_two_oppened
         else:
             if check == 1:
-                positionEval += self.AiTwo
-        return positionEval
+                movements += self.ia_has_two
+        return movements
 
     def checkBorder(self, x, y):
         if x < 0 or y < 0 or x >= self.dimension or y >= self.dimension:
@@ -561,7 +492,6 @@ class Protocol_funct:
         "INFO":infoFunction,
         "DISPLAY":displayBoard
     }
-
     info_dictionary = {
         "timeout_turn":setTurnTimeout,
         "timeout_match":setMatchTimeout,
@@ -572,9 +502,49 @@ class Protocol_funct:
         "evaluate":setEvaluate,
         "folder":setFolder
     }
+    timeout_turn = 0
+    timeout_match = 0
+    max_memory = 0
+    time_left = 0
+    game_type = 0
+    rule = 0
+    evaluate = 0
+    folder = 0
+    player = 0
+    dimension = 0
+    board = 0
+    minEval = [0, 0, 100000000000]
+    maxEval = [0, 0, -100000000000]
+    case = [0, 0, 0]
+    ia_has_five_full = 9000000000000
+    opponent_has_five_full = 900000000000
+    ia_has_openned_four = 90000000000
+    opponnent_has_openned_four = 9000000000
+    ia_has_four_and_three = 900000000
+    opponent_has_four = 90000000
+    ia_has_three_and_two = 9000000
+    opponnent_has_three_and_two = 900000
+    ia_has_openned_three = 15000
+    opponnent_has_opened_three = 5000
+    ia_has_four = 3000
+    opponent_has_four = 2000
+    ia_has_two_oppened = 1000
+    ia_has_three = 600
+    opponent_has_three = 300
+    ia_has_two = 200
+
+    def __init__(self):
+        self.start()
+
+    def start(self):
+        while 1:
+            commandMessage = input().split(" ")
+            command = commandMessage[0]
+            self.function_dictionary[command](self, commandMessage)
+
 
 def main():
-    Protocol_funct()
+    gomoku_ai()
     return (0)
 
 if __name__ == "__main__":
