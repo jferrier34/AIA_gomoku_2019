@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from sys import stdout, exit
+from sys import stdout, exit, stdin
 from random import randint
 
 class gomoku_ai:
@@ -43,6 +43,9 @@ class gomoku_ai:
             self.board = [[0 for i in range(0, self.dimension+4)] for j in range(0, self.dimension+4)]
             stdout.flush()
             return 0
+        else:
+            stdout.write("ERROR\n")
+            exit(0)
 
     def beginFunction(self, arg):
         gomoku_ai.play(self)
@@ -537,7 +540,7 @@ class gomoku_ai:
         self.start()
 
     def start(self):
-        while 1:
+        while True:
             commandMessage = input().split(" ")
             command = commandMessage[0]
             self.function_dictionary[command](self, commandMessage)
